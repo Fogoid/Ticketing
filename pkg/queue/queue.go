@@ -17,16 +17,17 @@ func (q *Queue[T]) Push(element T) {
 	q.count++
 }
 
-func (q *Queue[T]) Pop() interface{} {
+func (q *Queue[T]) Pop() (T, bool) {
 	if q.count <= 0 {
-		return nil
+        var zeroVal T
+		return zeroVal, false
 	}
 
 	element := q.elements[0]
 	q.elements = q.elements[1:]
 	q.count--
 
-	return element
+	return element, true
 }
 
 func (q *Queue[T]) IsEmpty() bool {

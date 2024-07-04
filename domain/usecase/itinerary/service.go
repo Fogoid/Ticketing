@@ -39,7 +39,7 @@ func (s *Service) CreateItinerary(from string, to string) (*Itinerary, error) {
 	queue := queue.New[*stationNode]()
 	queue.Push(currentNode)
 	for !queue.IsEmpty() {
-		currentNode := queue.Pop().(*stationNode)
+		currentNode, _ := queue.Pop()
 		if currentNode.station.Name == toStation.Name {
 			return s.calculateItinerary(currentNode)
         }
@@ -62,7 +62,8 @@ func (s *Service) getStationsGraph(initialStation *station.Station) (*StationsGr
 	initialNode := NewStationNode(initialStation)
 	stationsToExpand.Push(initialNode)
 	for !stationsToExpand.IsEmpty() {
-		currentStation := stationsToExpand.Pop().(*station.Station)
+		currentNode, _ := stationsToExpand.Pop()
+        currentStation := currentNode.station
 
 		if expandedStations[currentStation.Name] {
 			continue

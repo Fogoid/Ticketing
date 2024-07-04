@@ -21,11 +21,23 @@ func TestQueuePushMultipleItems(t *testing.T) {
 	assert.Equal(t, []int{2, 3}, queue.elements)
 }
 
+func TestQueuePopWithNoValues(t *testing.T) {
+	queue := New[int]()
+    assert.Equal(t, 0, queue.count)
+    assert.Equal(t, []int{}, queue.elements)
+
+    zeroVal, popped := queue.Pop()
+	assert.Equal(t, 0, zeroVal)
+	assert.False(t, popped)
+}
+
 func TestQueuePopWithSingleValue(t *testing.T) {
 	queue := New[int]()
 	queue.Push(2)
 
-	assert.Equal(t, 2, queue.Pop())
+    zeroVal, popped := queue.Pop()
+	assert.Equal(t, 2, zeroVal)
+	assert.True(t, popped)
 	assert.Equal(t, 0, queue.count)
 	assert.Equal(t, []int{}, queue.elements)
 }
@@ -35,11 +47,15 @@ func TestQueuePopWithMultipleValues(t *testing.T) {
 	queue.Push(2)
 	queue.Push(3)
 
-	assert.Equal(t, 2, queue.Pop())
+    zeroVal, popped := queue.Pop()
+	assert.Equal(t, 2, zeroVal)
+	assert.True(t, popped)
 	assert.Equal(t, 1, queue.count)
 	assert.Equal(t, []int{3}, queue.elements)
 
-	assert.Equal(t, 3, queue.Pop())
+    zeroVal, popped = queue.Pop()
+	assert.Equal(t, 3, zeroVal)
+	assert.True(t, popped)
 	assert.Equal(t, 0, queue.count)
 	assert.Equal(t, []int{}, queue.elements)
 }
